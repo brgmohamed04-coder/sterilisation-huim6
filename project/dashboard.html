@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>sterilisation-huim6</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial;
+    background: #eef3f4;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+}
+
+.logo-left {
+    width: 160px;
+}
+
+#welcome {
+    color: #2c7a7b;
+}
+
+/* زر logout */
+.logout {
+    background: red;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+}
+
+/* GRID */
+.container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    padding: 40px;
+    max-width: 900px;
+    margin: auto;
+}
+
+/* CARD */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.card img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    border: 4px solid #2c7a7b;
+}
+
+.card p {
+    margin-top: 10px;
+    font-weight: bold;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+    <img src="logo.png" class="logo-left">
+    <h2 id="bienvenue"></h2>
+    <button class="sortir" onclick="logout()">sortir</button>
+</div>
+
+<div class="container">
+
+    <div class="card" onclick="goTest()">
+        <img src="test.png">
+        <p>Test équipements</p>
+    </div>
+
+    <div class="card">
+        <img src="predesinfection.png">
+        <p>Pré-désinfection</p>
+    </div>
+
+    <div class="card">
+        <img src="lavage.png">
+        <p>Lavage</p>
+    </div>
+
+    <div class="card">
+        <img src="conditionnement.png">
+        <p>Conditionnement</p>
+    </div>
+
+    <div class="card">
+        <img src="sterilisation.png">
+        <p>Stérilisation</p>
+    </div>
+
+    <div class="card">
+        <img src="liberation.png">
+        <p>Libération</p>
+    </div>
+
+</div>
+
+<script>
+
+// protection
+let user = localStorage.getItem("user");
+
+if(!user){
+    window.location.href = "login.html";
+}
+
+document.getElementById("welcome").innerText = "Welcome " + user;
+
+// navigation
+function goTest(){
+    window.location.href = "test.html";
+}
+
+// logout
+function logout(){
+    localStorage.removeItem("user");
+    window.location.href = "login.html";
+}
+
+</script>
+
+</body>
+</html>
