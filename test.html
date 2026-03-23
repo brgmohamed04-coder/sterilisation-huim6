@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -115,16 +114,24 @@ object-fit:contain;
 </div>
 
 <script>
-  localstorage.removeitem("cycles");//
+
 let user="mohamed birgach";
 document.getElementById("userName").innerText="User: "+user;
 
-// cycles
+// cycles (FIX + SAVE PRO)
 let cycles = JSON.parse(localStorage.getItem("cycles"));
+
 if(!cycles){
-cycles = {1:11423,2:9700,3:500};
-localStorage.setItem("cycles", JSON.stringify(cycles));
+  cycles = {1:11423,2:9700,3:500};
 }
+
+// حماية من undefined
+if(!cycles[1]) cycles[1]=11423;
+if(!cycles[2]) cycles[2]=9700;
+if(!cycles[3]) cycles[3]=500;
+
+// حفظ دائم
+localStorage.setItem("cycles", JSON.stringify(cycles));
 
 // afficher
 document.getElementById("c1").innerText="Cycle: "+cycles[1];
