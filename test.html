@@ -86,7 +86,7 @@ object-fit:contain;
 
 <div class="box">
 <img src="e2ce0d03e2ec26fb4b5fe6d6b88948d9.jpg" class="imgBox">
-<h3>Autoclave 02</h3>
+<h3>Autoclave 01</h3>
 <p id="t1">Chauffage</p>
 <p class="cycleText" id="c1"></p>
 <button class="valid" onclick="next(1,true)">Valide</button>
@@ -95,7 +95,7 @@ object-fit:contain;
 
 <div class="box">
 <img src="e2ce0d03e2ec26fb4b5fe6d6b88948d9.jpg" class="imgBox">
-<h3>Autoclave 01</h3>
+<h3>Autoclave 02</h3>
 <p id="t2">Chauffage</p>
 <p class="cycleText" id="c2"></p>
 <button class="valid" onclick="next(2,true)">Valide</button>
@@ -115,14 +115,14 @@ object-fit:contain;
 
 <script>
 
-let user="mohamed birgach";
+let user="username";
 document.getElementById("userName").innerText="User: "+user;
 
 // cycles (FIX + SAVE PRO)
 let cycles = JSON.parse(localStorage.getItem("cycles"));
 
 if(!cycles){
-  cycles = {1:11423,2:9700,3:500};
+  cycles = {1:9700,2:11423,3:500};
 }
 
 // حماية من undefined
