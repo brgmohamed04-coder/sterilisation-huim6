@@ -122,7 +122,7 @@ object-fit:contain;
 
 <script>
 
-// ✅ USER FIX (الجديد فقط)
+// USER
 let user = localStorage.getItem("user");
 
 if(!user || user === "username"){
@@ -211,18 +211,22 @@ function generatePDF(machine){
 const { jsPDF } = window.jspdf;
 const doc = new jsPDF();
 
-let y=20;
+// ✅ LOGO
+let img = new Image();
+img.src = "logo26.png";
+doc.addImage(img, 'PNG', 20, 10, 30, 20);
 
-doc.setFontSize(14);
-doc.text("HOPITAL UNIVERSITAIRE",60,y);
-y+=6;
-doc.text("INTERNATIONAL MOHAMMED VI",40,y);
+// HEADER
+doc.setFontSize(12);
+doc.text("HOPITAL UNIVERSITAIRE",60,15);
+doc.text("INTERNATIONAL MOHAMMED VI",50,22);
 
-y+=10;
-doc.text("CYCLE DE PRE-PRODUCTION",50,y);
+doc.setFontSize(11);
+doc.text("CYCLE DE PRE-PRODUCTION",60,30);
 
-y+=10;
+let y=45;
 
+// BOX INFO
 doc.rect(20,y,80,20);
 doc.setFontSize(10);
 doc.text("Date: "+new Date().toLocaleDateString(),22,y+6);
@@ -232,6 +236,7 @@ doc.text("Operateur: "+user,120,y+10);
 
 y+=30;
 
+// TABLE
 doc.text("TEST de pre-production",20,y);
 y+=10;
 
@@ -241,6 +246,7 @@ doc.text("Valide",140,y);
 
 y+=8;
 
+// TESTS
 tests[machine].forEach(t=>{
 
 let data = results[machine][t];
@@ -262,12 +268,23 @@ doc.text(data.val.toString(),150,y);
 y+=10;
 });
 
+// NOTE
 y+=10;
 doc.text("NOTE:",20,y);
 doc.line(20,y+5,180,y+5);
 
+// SIGNATURE
 y+=20;
-doc.text("Signature operateur",120,y);
+doc.text("Signature superviseur",120,y);
+
+// ✅ TABLE RESPONSABLE (الجديد)
+y += 20;
+
+doc.rect(20, y, 170, 30);
+
+doc.setFontSize(9);
+doc.text("NOM ET SIGNATURE DU RESPONSABLE ET PHARMACIENNE",25,y+8);
+doc.text("(Pour la reconnaissance de tous les tests de preproduction)",25,y+15);
 
 doc.save("rapport_"+getName(machine)+".pdf");
 }
