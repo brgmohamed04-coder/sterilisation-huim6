@@ -38,6 +38,13 @@ cursor:pointer;
 
 .centerHeader{text-align:center;}
 
+.userDisplay{
+font-size:16px;
+margin-top:5px;
+color:#eaffea;
+font-weight:bold;
+}
+
 .container{
 display:flex;
 justify-content:center;
@@ -77,7 +84,7 @@ object-fit:contain;
 
 <div class="centerHeader">
 <h2>Test Equipement</h2>
-<p id="userName"></p>
+<p id="userName" class="userDisplay"></p>
 </div>
 
 </div>
@@ -115,28 +122,31 @@ object-fit:contain;
 
 <script>
 
-let user="username";
-document.getElementById("userName").innerText="User: "+user;
+// 👤 USER (من login أو default)
+let user = localStorage.getItem("user") || "mohamed birgach";
+document.getElementById("userName").innerText="Operateur: "+user;
 
-// cycles (FIX + SAVE PRO)
+
+// 🔥 cycles مصححين
 let cycles = JSON.parse(localStorage.getItem("cycles"));
 
 if(!cycles){
   cycles = {1:9700,2:11423,3:500};
 }
 
-// حماية من undefined
-if(!cycles[1]) cycles[1]=11423;
-if(!cycles[2]) cycles[2]=9700;
+// حماية
+if(!cycles[1]) cycles[1]=9700;
+if(!cycles[2]) cycles[2]=11423;
 if(!cycles[3]) cycles[3]=500;
 
-// حفظ دائم
+// حفظ
 localStorage.setItem("cycles", JSON.stringify(cycles));
 
 // afficher
 document.getElementById("c1").innerText="Cycle: "+cycles[1];
 document.getElementById("c2").innerText="Cycle: "+cycles[2];
 document.getElementById("c3").innerText="Cycle: "+cycles[3];
+
 
 // tests
 let tests={
@@ -148,7 +158,8 @@ let tests={
 let state={1:0,2:0,3:0};
 let results={1:{},2:{},3:{}};
 
-// NEXT (logic PRO)
+
+// NEXT
 function next(m,ok){
 
 let test = tests[m][state[m]];
@@ -157,7 +168,7 @@ if(!results[m][test]){
 results[m][test] = { non:[], val:null };
 }
 
-// ❌ NON VALIDE
+// NON VALIDE
 if(!ok){
 results[m][test].non.push(cycles[m]);
 cycles[m]++;
@@ -167,7 +178,7 @@ document.getElementById("c"+m).innerText="Cycle: "+cycles[m];
 return;
 }
 
-// ✔️ VALIDE
+// VALIDE
 results[m][test].val = cycles[m];
 cycles[m]++;
 updateStorage();
@@ -183,17 +194,20 @@ generatePDF(m);
 }
 }
 
+
 // SAVE
 function updateStorage(){
 localStorage.setItem("cycles", JSON.stringify(cycles));
 }
+
 
 // NAME
 function getName(m){
 return m==1?"Autoclave 01":m==2?"Autoclave 02":"Plasma";
 }
 
-// PDF FORMAT HOSPITAL 100%
+
+// PDF
 function generatePDF(machine){
 
 const { jsPDF } = window.jspdf;
@@ -201,7 +215,6 @@ const doc = new jsPDF();
 
 let y=20;
 
-// HEADER
 doc.setFontSize(14);
 doc.text("HOPITAL UNIVERSITAIRE",60,y);
 y+=6;
@@ -212,7 +225,6 @@ doc.text("CYCLE DE PRE-PRODUCTION",50,y);
 
 y+=10;
 
-// BOX INFO
 doc.rect(20,y,80,20);
 doc.setFontSize(10);
 doc.text("Date: "+new Date().toLocaleDateString(),22,y+6);
@@ -222,7 +234,6 @@ doc.text("Operateur: "+user,120,y+10);
 
 y+=30;
 
-// TABLE HEADER
 doc.text("TEST de pre-production",20,y);
 y+=10;
 
@@ -232,21 +243,18 @@ doc.text("Valide",140,y);
 
 y+=8;
 
-// TESTS
 tests[machine].forEach(t=>{
 
 let data = results[machine][t];
 
 doc.text(t,20,y);
 
-// ❌ NON VALIDE
 doc.rect(80,y-4,5,5);
 if(data?.non?.length){
 doc.text("X",81,y-1);
 doc.text(data.non.join(","),90,y);
 }
 
-// ✔️ VALIDE
 doc.rect(140,y-4,5,5);
 if(data?.val){
 doc.text("X",141,y-1);
@@ -256,17 +264,16 @@ doc.text(data.val.toString(),150,y);
 y+=10;
 });
 
-// NOTE
 y+=10;
 doc.text("NOTE:",20,y);
 doc.line(20,y+5,180,y+5);
 
-// SIGNATURE
 y+=20;
 doc.text("Signature operateur",120,y);
 
 doc.save("rapport_"+getName(machine)+".pdf");
 }
+
 
 // RETOUR
 function goBack(){
